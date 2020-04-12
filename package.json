@@ -1,0 +1,13 @@
+{
+  "name": "ArgusEventService",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "aws-sdk": "^2.656.0",
+    "serverless": "^1.67.3"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^8.5.1"
+  }
+}

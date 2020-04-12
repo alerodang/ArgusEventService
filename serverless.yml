@@ -1,0 +1,60 @@
+service: argus-event-service
+
+provider:
+
+  name: aws
+  stage: dev
+  region: eu-west-1
+
+  apiKeys:
+    - argus-event-service-testing-key
+    - argus-event-service-app-dev
+
+  environment:
+    APP_BUCKET: argus-security-app
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:*
+      Resource:
+        - ${self:custom.bucket-arn}
+        - ${self:custom.bucket-arn}/*
+
+functions:
+
+  listEvents:
+    runtime: nodejs12.x
+    handler: src/handler/listEvents.handler
+    events:
+      - http:
+          path: listEvents
+          method: get
+#          private: true
+#          authorizer:
+#            arn:  ${self:custom.authorizer-arn}
+
+  getEvent:
+    runtime: nodejs12.x
+    handler: src/handler/getEvent.handler
+    events:
+      - http:
+          path: event
+          method: get
+#          private: true
+#          authorizer:
+#            arn:  ${self:custom.authorizer-arn}
+#
+  getEventImageUrl:
+    runtime: nodejs12.x
+    handler: src/handler/getEventImageUrl.handler
+    events:
+      - http:
+          path: eventImage
+          method: get
+#          private: true
+#          authorizer:
+#            arn:  ${self:custom.authorizer-arn}
+
+custom:
+  bucket-arn: arn:aws:s3:::argus-security-app
