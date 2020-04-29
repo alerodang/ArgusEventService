@@ -23,16 +23,16 @@ provider:
 
 functions:
 
-  listEvents:
+  findEvents:
     runtime: nodejs12.x
-    handler: src/handler/listEvents.handler
+    handler: src/handler/findEvents.handler
     events:
       - http:
-          path: listEvents
+          path: findEvents
           method: get
-#          private: true
-#          authorizer:
-#            arn:  ${self:custom.authorizer-arn}
+          private: true
+          authorizer:
+            arn:  ${self:custom.authorizer-arn}
 
   getEvent:
     runtime: nodejs12.x
@@ -41,23 +41,24 @@ functions:
       - http:
           path: event
           method: get
-#          private: true
-#          authorizer:
-#            arn:  ${self:custom.authorizer-arn}
-#
+          private: true
+          authorizer:
+            arn:  ${self:custom.authorizer-arn}
+
   getEventImageUrl:
     runtime: nodejs12.x
     handler: src/handler/getEventImageUrl.handler
     events:
       - http:
-          path: eventImage
+          path: eventImageUrl
           method: get
-#          private: true
-#          authorizer:
-#            arn:  ${self:custom.authorizer-arn}
+          private: true
+          authorizer:
+            arn:  ${self:custom.authorizer-arn}
 
 custom:
   bucket-arn: arn:aws:s3:::argus-security-app
+  authorizer-arn: arn:aws:cognito-idp:eu-west-1:206386915763:userpool/eu-west-1_vMNp7XqR0
 
 resources:
   Resources:

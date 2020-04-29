@@ -7,7 +7,7 @@ const bucket = process.env.APP_BUCKET;
 
 module.exports.handler = async (event) => {
 
-    const {objectKey, expires} = event.headers;
+    const {object_key: objectKey, expires} = event.headers;
 
     const imageUrl = await s3.getSignedUrl('getObject', {
         Bucket: bucket,
