@@ -21,7 +21,6 @@ module.exports.handler = async (event) => {
     });
 
     const eventData = JSON.parse(s3Response.Body.toString());
-    const name = eventData["Item"]["name"];
     const splitObjectKey = objectKey.split('/');
     const producer = splitObjectKey[2];
     const date = splitObjectKey[3] + splitObjectKey[4] + splitObjectKey[5].split('.')[0];
@@ -31,19 +30,39 @@ module.exports.handler = async (event) => {
         date.substring(8, 10) + ':' +
         date.substring(10, 12) + ':' +
         date.substring(12, 14);
-    return {
-        statusCode: 200,
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-            object: {
-                imageUrl: imageUrl,
-                producer: producer,
-                date: formattedDate,
-                recognition: {
-                    name: name
-                },
-                objectKey: objectKey,
-            }
-        })
+    if (Object.keys(eventData).length === 0) {
+        return {
+            statusCode: 200,
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                object: {
+                    imageUrl: imageUrl,
+                    producer: producer,
+                    date: formattedDate,
+                    recognition: {
+                        success: false
+                    },
+                    objectKey: objectKey,
+                }
+            })
+        }
+    } else {
+        const name = eventData["Item"]["name"];
+        return {
+            statusCode: 200,
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                object: {
+                    imageUrl: imageUrl,
+                    producer: producer,
+                    date: formattedDate,
+                    recognition: {
+                        name: name,
+                        success: true
+                    },
+                    objectKey: objectKey,
+                }
+            })
+        }
     }
 }
